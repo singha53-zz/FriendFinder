@@ -16,7 +16,7 @@
   <!-- Chosen -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
-
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 
 <body>
@@ -207,6 +207,7 @@
         <div class="modal-body">
           <h2 id="match-name"></h2>
           <img id="match-img" src="" alt="">
+          <div id="match-chart" style="width:500px;height:300px;></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -282,9 +283,45 @@
 
         // AJAX post the data to the friends API.
         $.post("/api/friends", userData, function (data) {
+          console.log(userData)
+          console.log(data)
           // Grab the result from the AJAX post so that the best match's name and photo are displayed.
           $("#match-name").text(data.name);
           $("#match-img").attr("src", data.photo);
+          var trace1 = {
+            x: ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10'],
+            y: userData.scores.map(d => +d),
+            type: 'bar',
+            name: userData.name,
+            marker: {
+              color: 'rgb(49,130,189)',
+              opacity: 0.7,
+            }
+          };
+
+          var trace2 = {
+            x: ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7', 'Q8', 'Q9', 'Q10'],
+            y: data.scores.map(d => +d),
+            type: 'bar',
+            name: data.name,
+            marker: {
+              color: 'rgb(204,204,204)',
+              opacity: 0.5
+            }
+          };
+
+          var data = [trace1, trace2];
+
+          var layout = {
+            title: 'Compare responses',
+            xaxis: {
+              tickangle: -45
+            },
+            barmode: 'group'
+          };
+
+          Plotly.newPlot('match-chart', data, layout);
+
 
           // Show the modal with the best match
           $("#results-modal").modal("toggle");
