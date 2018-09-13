@@ -31,6 +31,10 @@
     </h3>
     <h4>Name (Required)</h4>
     <input type="text" id="name" class="form-control" required>
+    <h4>Occupation (Required)</h4>
+    <input type="text" id="jobTitle" class="form-control" required>
+    <h4>Phone Number (Required)</h4>
+    <input type="text" id="phoneNumber" class="form-control" required>
 
     <h4>Link to Photo Image (Required)</h4>
     <input type="text" id="photo" class="form-control" required>
@@ -205,12 +209,12 @@
           </h2>
         </div>
         <div class="modal-body">
+          <img id="match-img" style="width:50%;" src="" alt="">
           <h2 id="match-name"></h2>
-          <img id="match-img" src="" alt="">
-          <div id="match-chart" style="width:500px;height:300px;"></div>
+          <div id="match-chart" style="width:500px;height:350px;"></div>
         </div>
         <div class=" modal-footer ">
-          <button type="button " class="btn btn-default " data-dismiss="modal ">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal ">Close</button>
         </div>
       </div>
 
@@ -257,14 +261,14 @@
       function validateForm() {
         var isValid = true;
         $(".form-control ").each(function () {
-          if ($(this).val() === " ") {
+          if ($(this).val() === "") {
             isValid = false;
           }
         });
 
         $(".chosen-select ").each(function () {
 
-          if ($(this).val() === " ") {
+          if ($(this).val() === "") {
             isValid = false;
           }
         });
@@ -274,17 +278,18 @@
       // If all required fields are filled
       if (validateForm()) {
         // Create an object for the user"s data 
-        var userData={ name: $( "#name").val(), photo: $( "#photo").val(), scores:
-            [ $( "#q1").val(), $( "#q2").val(), $( "#q3").val(), $( "#q4").val(), $( "#q5").val(), $( "#q6").val(), $("#q7").val(), $( "#q8").val(), $( "#q9").val(), $( "#q10").val() ] }; 
-            
+        var userData={ name: $("#name").val(), jobTitle: $("#jobTitle").val(), phoneNumber: $("#phoneNumber").val(), photo: $("#photo").val(), scores:
+            [ $("#q1").val(), $("#q2").val(), $("#q3").val(), $("#q4").val(), $("#q5").val(), $("#q6").val(), $("#q7").val(), $("#q8").val(), $("#q9").val(), $("#q10").val() ] }; 
             
             // AJAX post the data to the friends API. 
             $.post("/api/friends", userData, function (data) {
-               console.log(userData) 
-               console.log(data) 
+
           //Grab the result from the AJAX post so that the best match 's name and photo are displayed.
-          $("#match-name").text(`Your have a ${Math.round(100*data.cor)}% match with ${data.name}.`);
-          $("#match-img").attr("src", userData.photo);
+          $("#match-name").text(`Your have a ${Math.round(100*data.cor)}% match with ${data.name}, a ${data.jobTitle}. Phone: ${data.phoneNumber}`);
+
+          $("#match-img").attr("src", data.photo);
+
+
           var trace1 = {
             x: ['Q1 ', 'Q2 ', 'Q3 ', 'Q4 ', 'Q5 ', 'Q6 ', 'Q7 ', 'Q8 ', 'Q9 ', 'Q10 '],
             y: userData.scores.map(d => +d),
@@ -312,13 +317,15 @@
           var layout = {
             title: 'Compare responses ',
             xaxis: {
-              tickangle: -45
+              title: 'Question'
             },
-            barmode: 'group '
+            yaxis: {
+              title: 'Score'
+            },
+            barmode: 'group'
           };
 
           Plotly.newPlot('match-chart', data, layout);
-
 
           // Show the modal with the best match
           $("#results-modal").modal("toggle");

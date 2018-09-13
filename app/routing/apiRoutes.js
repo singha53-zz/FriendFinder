@@ -9,6 +9,8 @@ module.exports = app => {
   app.post('/api/friends', (req, res) => {
     var user = {
       name: req.body['name'],
+      jobTitle: req.body['jobTitle'],
+      phoneNumber: req.body['phoneNumber'],
       photo: req.body['photo'],
       scores: req.body['scores[]']
     };
