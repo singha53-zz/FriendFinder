@@ -1,40 +1,25 @@
-var friends = [
-  {
-    name: 'Ahmed',
-    photo:
-      'https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAq7AAAAJDAwYzI4NTQ4LWYwZWUtNGFkYS1hNTYwLTZjYzkwY2ViZDA3OA.jpg',
-    scores: ['5', '2', '1', '4', '5', '1', '2', '5', '4', '1']
-  },
-  {
-    name: 'amrit',
-    photo:
-      'https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAq7AAAAJDAwYzI4NTQ4LWYwZWUtNGFkYS1hNTYwLTZjYzkwY2ViZDA3OA.jpg',
-    scores: ['5', '1', '4', '4', '5', '4', '1', '4', '4', '1']
-  },
-  {
-    name: 'ronaldo',
-    photo:
-      'https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAq7AAAAJDAwYzI4NTQ4LWYwZWUtNGFkYS1hNTYwLTZjYzkwY2ViZDA3OA.jpg',
-    scores: ['5', '1', '1', '4', '5', '1', '2', '5', '4', '1']
-  },
-  {
-    name: 'messi',
-    photo:
-      'https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAq7AAAAJDAwYzI4NTQ4LWYwZWUtNGFkYS1hNTYwLTZjYzkwY2ViZDA3OA.jpg',
-    scores: ['5', '1', '4', '4', '5', '4', '4', '5', '4', '1']
-  },
-  {
-    name: 'ali',
-    photo:
-      'https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAq7AAAAJDAwYzI4NTQ4LWYwZWUtNGFkYS1hNTYwLTZjYzkwY2ViZDA3OA.jpg',
-    scores: ['2', '1', '4', '4', '5', '3', '2', '5', '4', '1']
-  },
-  {
-    name: 'denis',
-    photo:
-      'https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAq7AAAAJDAwYzI4NTQ4LWYwZWUtNGFkYS1hNTYwLTZjYzkwY2ViZDA3OA.jpg',
-    scores: ['4', '1', '4', '4', '5', '1', '2', '2', '4', '1']
-  }
-];
+var faker = require('faker');
+var axios = require('axios');
+
+// Create 100 fake user profiles
+var numberOfUsers = 100;
+var friends = [];
+
+for (let i = 0; i < numberOfUsers; i++) {
+  axios.get('https://dog.ceo/api/breeds/image/random')
+  .then(function (response) {
+    friends.push({
+      name: [faker.name.firstName(), faker.name.lastName()].join(' '),
+      jobTitle: faker.name.jobTitle(),
+      phoneNumber: faker.phone.phoneNumber(),
+      photo: response.data.message,
+      scores: [1,2,3,4,5,6,7,8,9,10].map(d => Math.ceil(Math.random()*5))
+    })
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+  
+}
 
 module.exports = friends;

@@ -22,8 +22,11 @@ module.exports = app => {
   });
 };
 function findFriend(user, db) {
+
   var cors = db.map(friend => {
-    return pcor.calc(user.scores.map(d => +d), friend.scores.map(d => +d));
+    return pcor.calc(user.scores.map(d => +d), friend.scores);
   });
-  return db[cors.indexOf(Math.max(...cors))];
+  match = db[cors.indexOf(Math.max(...cors))]
+  match.cor = Math.max(...cors)
+  return match
 }
