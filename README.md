@@ -12,7 +12,7 @@ $ npm install
 ```
 
 ## Walkthroughs
-![Customer View GIF](https://github.com/singha53/bamazon/blob/master/media/bamazonCustomer.gif)
+![GIF](https://github.com/singha53/FriendFinder/blob/master/walkthrough.gif)
 
 ## Programming Languages / Databases
 ### Front-end
