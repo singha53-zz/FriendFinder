@@ -14,7 +14,7 @@ $ npm install
 ## Walkthroughs
 ![GIF](https://github.com/singha53/FriendFinder/blob/master/walkthrough.gif)
 
-## Programming Languages / Databases
+## Programming/Scripting Languages
 ### Front-end
 - HTML, CSS (Bootstrap)
 - Javascript (JQuery)
